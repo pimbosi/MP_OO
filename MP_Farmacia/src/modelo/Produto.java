@@ -1,29 +1,31 @@
-package classes;
+package modelo;
+
+import java.text.DecimalFormat;
 
 public abstract class Produto {
 
-	private int id;
 	private String nome;
 	private String marca;
 	private float preco;
 	private int quantidadeEstoque;
 	private String dataValidade;
+	private String quantidade;
+	private String principioativo;
 
-	public Produto(String nome, float preco, String dataValidade, String marca, int quantidadeEstoque, int id) {
+	public Produto(String nome, String marca, float preco,
+			int quantidadeEstoque, String dataValidade,
+			String quantidade, String principioativo) {
 		this.nome = nome;
 		this.preco = preco;
 		this.dataValidade = dataValidade;
 		this.marca = marca;
 		this.quantidadeEstoque = quantidadeEstoque;
-		this.id = id;
+		this.quantidade = quantidade;
+		this.principioativo = principioativo; 
 	}
-	
+		
 	public String getnome() {
 		return this.nome;
-	}
-	
-	public int getid() {
-		return this.id;
 	}
 	
 	public String getmarca() {
@@ -42,12 +44,16 @@ public abstract class Produto {
 		return this.dataValidade;
 	}
 	
+	public String getPrincipioativo() {
+		return principioativo;
+	}
+	
 	public String setnome(String nome) {
 		return this.nome;
 	}
 	
-	public int setid(int id) {
-		return this.id;
+	public String getQuantidade() {
+		return quantidade;
 	}
 	
 	public String setmarca(String marca) {
@@ -64,6 +70,14 @@ public abstract class Produto {
 
 	public String setdataValidade(String dataValidade) {
 		return this.dataValidade;
+	}
+
+	public void setPrincipioativo(String principioativo) {
+		this.principioativo = principioativo;
+	}
+	
+	public void setQuantidade(String quantidade) {
+		this.quantidade = quantidade;
 	}
 
 }
