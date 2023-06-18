@@ -128,8 +128,5 @@ public class Farmacia {
 	public void removeproduto(Produto removeproduto) {
 		this.produtos.remove(removeproduto);
 	}
-	
-	public void buscaproduto(Produto buscaproduto) {
-		this.produtos.remove(buscaproduto);
-	}
+
 }
