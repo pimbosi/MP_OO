@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Farmacia {
 	
-	private static Farmacia instance;
+	private static Farmacia instancia;
 	private ArrayList<Produto> produtos = new ArrayList<>();
 	
 	private Farmacia() {
@@ -12,10 +12,10 @@ public class Farmacia {
     }
 
     public static Farmacia getInstance() {
-        if (instance == null) {
-            instance = new Farmacia();
+        if (instancia == null) {
+            instancia = new Farmacia();
         }
-        return instance;
+        return instancia;
     }
 
 	public void preencherDados() {
@@ -117,16 +117,24 @@ public class Farmacia {
 		return produtos;
 	}
 	
-	public void addproduto(Produto novoproduto) {
-		this.produtos.add(novoproduto);
+	public boolean addproduto(Produto novoproduto) {
+		return this.produtos.add(novoproduto);
 	}
 	
 	public void setproduto(int index, Produto novoproduto) {
 		this.produtos.set(index, novoproduto);
 	}
 	
-	public void removeproduto(Produto removeproduto) {
-		this.produtos.remove(removeproduto);
+	public boolean removeproduto(Produto removeproduto) {
+		return this.produtos.remove(removeproduto);
 	}
 
+	public int buscaproduto(String pesquisa) {
+		for (int i = 0; i < produtos.size(); i++) {
+	        if (produtos.get(i).getnome().equals(pesquisa)) {
+	            return i;
+	        }
+	    }
+	    return -1;
+	}
 }

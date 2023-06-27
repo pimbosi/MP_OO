@@ -2,12 +2,11 @@ package view;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import controle.*;
 import javax.swing.*;
 import modelo.*;
 
-public class Menu extends JFrame implements ActionListener {
+public class TelaPrincipal implements ActionListener {
 	
 	private static JFrame janela = new JFrame("Pharma&Cia");
 	private static JLabel titulo = new JLabel("PHARMA & CIA");	
@@ -26,13 +25,14 @@ public class Menu extends JFrame implements ActionListener {
 	private static JTextField pesquisa = new JTextField(100);
 	
 	private static JLabel filtrar = new JLabel("Filtrar: ");
-	private String[] opcoes = {"Todos", "Medicamento", "Vitamina", "Cosmético"};
-    private JComboBox<String> filtro = new JComboBox<>(opcoes);
+	private static String[] opcoes={"Todos", "Medicamento", "Vitamina", 
+			"Cosmético"};
+    private static JComboBox<String> filtro = new JComboBox<>(opcoes);
 	
 	private static Farmacia f = Farmacia.getInstance(); 
-	private ControleProdutos controle = ControleProdutos.getInstance();
+	private static ControleProdutos controle = ControleProdutos.getInstance();
 	
-	public Menu() {
+	public TelaPrincipal() {
 		titulo.setBounds(210, 40, 5000, 150);
 		titulo.setFont(new Font("Arial", Font.BOLD, 180));
 		titulo.setForeground(new Color(255, 255, 255));
@@ -79,16 +79,17 @@ public class Menu extends JFrame implements ActionListener {
 		    scrollProdutos.setBounds(200,300,1520,500);
 			janela.add(scrollProdutos);
 		} else {
-			JOptionPane.showMessageDialog(null,"Não foi possível adicionar produtos a lista!", null, 
+			JOptionPane.showMessageDialog(null,"Não foi "
+					+ "possível adicionar produtos a lista!", null, 
 					JOptionPane.ERROR_MESSAGE);
 		}
 		
 		janela.setLayout(null);
 		janela.add(titulo);
 		janela.add(addProduto);
-		janela.add(atualizar);
 		janela.add(excluir);
 		janela.add(editar);
+		janela.add(atualizar);
 		janela.add(pesquisa);
 		janela.add(pesquisar);
 		janela.add(filtro);
@@ -102,17 +103,20 @@ public class Menu extends JFrame implements ActionListener {
 	}
 	
 	public static void main(String[] args) {
-		 Menu menu = new Menu();
+		 TelaPrincipal tela = new TelaPrincipal();
 
-		 addProduto.addActionListener(menu);
-		 atualizar.addActionListener(menu);
-		 excluir.addActionListener(menu);
-		 editar.addActionListener(menu);
-		 pesquisa.addActionListener(menu);
+		 addProduto.addActionListener(tela);
+		 atualizar.addActionListener(tela);
+		 excluir.addActionListener(tela);
+		 editar.addActionListener(tela);
+		 pesquisa.addActionListener(tela);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		Object src = e.getSource();
+		String opcaoSelecionada = (String) filtro.getSelectedItem();
+		char selecionado;
+		boolean retorno = false;
 		
 		if(src == addProduto)
 			new TelaProduto();
@@ -120,30 +124,40 @@ public class Menu extends JFrame implements ActionListener {
 		if(src == excluir) {
 			if (listaProdutos.getSelectedIndex() > -1) {
 		        String nomeSelecionado = listaProdutos.getSelectedValue();
-		        int indexOriginal = controle.getIndexProduto(nomeSelecionado);
-		        controle.excluirProduto(indexOriginal, f);
+		        int indexOriginal = f.buscaproduto(nomeSelecionado);
+		        retorno = controle.excluirProduto(indexOriginal, f);
 		    }
-			JOptionPane.showMessageDialog(null, "Item excluído com sucesso!",
-	    		 "EXCLUÍDO", JOptionPane.INFORMATION_MESSAGE);
-		}
-		
-		if(src == atualizar){
-			listaProdutos.setListData(controle.getnomeProdutos());
-			listaProdutos.updateUI();
+			if(retorno == true) {
+				JOptionPane.showMessageDialog(null, "Produto excluído com "
+						+ "sucesso!",
+						"EXCLUÍDO", JOptionPane.INFORMATION_MESSAGE);
+			}else { 
+				JOptionPane.showMessageDialog(null, "Erro ao excluir produto!"
+						+ "\nCertifique-se de que um produto foi selecionado",	
+					"ERRO", JOptionPane.ERROR_MESSAGE);
+				System.out.println(listaProdutos.getSelectedIndex());
+			}
 		}
 		
 		if(src == editar) {
 			if (listaProdutos.getSelectedIndex() > -1) {
 		        String nomeSelecionado = listaProdutos.getSelectedValue();
-		        int indexOriginal = controle.getIndexProduto(nomeSelecionado);
+		        int indexOriginal = f.buscaproduto(nomeSelecionado);
 		        Produto produto = controle.castProduto(indexOriginal);
 		        new TelaProduto().mostraDados(indexOriginal, produto);
+		    }else { 
+				JOptionPane.showMessageDialog(null, "Não foi possível editar "
+						+ "o produto.\nCertifique-se de que um produto foi "
+						+ "selecionado",	
+					"ERRO", JOptionPane.ERROR_MESSAGE);
 		    }
 		}	
-	
-		String opcaoSelecionada = (String) filtro.getSelectedItem();
-		char selecionado;
 		
+		if(src == atualizar){
+			listaProdutos.setListData(controle.getnomeProdutos());
+			listaProdutos.updateUI();
+		}
+	
 		if (opcaoSelecionada.equals("Cosmético")){
 			selecionado = 'c';
 			listaProdutos.setListData(controle.filtrarLista(selecionado));
@@ -167,8 +181,15 @@ public class Menu extends JFrame implements ActionListener {
 				listaProdutos.setListData(controle.getnomeProdutos());
 				listaProdutos.updateUI();
 			}else {
-				listaProdutos.setListData(controle.getPesquisa(nomePesquisado));
-				listaProdutos.updateUI();
+				if ((controle.getPesquisa(nomePesquisado)) == null){
+					JOptionPane.showMessageDialog(null, "Produto "
+						+ "não encontrado!",
+						"NÃO ENCONTRADO", JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					listaProdutos.setListData
+					(controle.getPesquisa(nomePesquisado));
+					listaProdutos.updateUI();
+				}
 			}
 		}
 	}

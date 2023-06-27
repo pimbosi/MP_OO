@@ -1,7 +1,5 @@
 package modelo;
 
-import java.text.DecimalFormat;
-
 public abstract class Produto {
 
 	private String nome;

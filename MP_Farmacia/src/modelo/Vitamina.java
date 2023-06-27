@@ -4,7 +4,8 @@ public class Vitamina extends Produto{
 	private String mododeuso;
 	private String recomendacao;
 
-    public Vitamina(String nome, String marca,float preco,int quantidadeEstoque,
+    public Vitamina(String nome, String marca,float preco,
+    		int quantidadeEstoque,
     		String dataValidade, String quantidade, 
     		String principioativo, String mododeuso, String recomendacao) {
     	super(nome,marca,preco,quantidadeEstoque,dataValidade,quantidade,

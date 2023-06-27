@@ -4,13 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.event.*;
 import modelo.*;
 import controle.*;
 
-public class TelaProduto implements ActionListener, ListSelectionListener{
+public class TelaProduto implements ActionListener{
 
 	private JFrame janela = new JFrame("Pharma&Cia");
 	private JLabel titulo = new JLabel("Cadastrar novo produto");	
@@ -43,7 +41,8 @@ public class TelaProduto implements ActionListener, ListSelectionListener{
 	private JTextField t12 = new JTextField(100);
 	private JTextField t13 = new JTextField(100);
 	
-	private String[] opcoes = {"Selecione", "Medicamento", "Vitamina", "Cosmético"};
+	private String[] opcoes = {"Selecione", "Medicamento",
+								"Vitamina", "Cosmético"};
     private JComboBox<String> comboBox = new JComboBox<>(opcoes);
 	
 	private JButton salvar = new JButton("Salvar");
@@ -53,7 +52,7 @@ public class TelaProduto implements ActionListener, ListSelectionListener{
 	private int edicao = -1;
 	
 	private static Farmacia f; 
-	private ControleProdutos controle = ControleProdutos.getInstance();
+	private static ControleProdutos controle = ControleProdutos.getInstance();
 	
 	public TelaProduto() {
 		
@@ -210,6 +209,7 @@ public class TelaProduto implements ActionListener, ListSelectionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		Object src = e.getSource();		
+		boolean retorno = false;
 		
 		if(src == cancelar) 
 			janela.dispose();
@@ -319,28 +319,32 @@ public class TelaProduto implements ActionListener, ListSelectionListener{
         			  categoria = 'v';
     			  }
     			  f = Farmacia.getInstance();
-    			  controle.adicionarProduto(edicao, dados, f, categoria);
+    			  retorno = controle.adicionarEditarProduto
+    					  (edicao, dados, f, categoria);
         		  
-        	      JOptionPane.showMessageDialog(null, "Dados salvos!",
+        	      if (retorno == true) {
+        	    	  JOptionPane.showMessageDialog(null, "Dados salvos!",
         	    		 "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
-        	      janela.dispose();
+        	      		janela.dispose();
+        	      }else {
+        	    	  JOptionPane.showMessageDialog(null, "Verifique se "
+    	    			  + "preencheu todos os campos corretamente.\n\n"
+    	    			  + "Obs: Os campos 'Preço' "
+	        	      + "e 'Quantidade em estoque' \n"
+	        	      + "só aceitam números como valores!", "ERRO", 
+	        	      JOptionPane.ERROR_MESSAGE);
+        	      }
         	  } else {
         	      JOptionPane.showMessageDialog(null, "Verifique se preencheu "
-        	      + "todos os campos corretamente.\n\nObs: Os campos 'Preço' e 'Quantidade"
-        	      + " em estoque' \nsó aceitam números como valores!", "ERRO", 
+        	      + "todos os campos corretamente.\n\nObs: Os campos 'Preço' "
+        	      + "e 'Quantidade em estoque' \n"
+        	      + "só aceitam números como valores!", "ERRO", 
         	      JOptionPane.ERROR_MESSAGE);
         	  }
 
           }
 	}
 		
-
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public void mostraDados(int edicao, Produto produto) {
 		this.edicao = edicao;
 		

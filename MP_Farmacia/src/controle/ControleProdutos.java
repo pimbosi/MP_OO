@@ -1,29 +1,25 @@
 package controle;
 
 import java.util.ArrayList;
-
-import javax.swing.JList;
-import javax.swing.DefaultListModel;
 import modelo.*;
 
 public class ControleProdutos {
 	
-	private static ControleProdutos instance;
+	private static ControleProdutos instancia;
 	private ArrayList<Produto> p;
-	private Farmacia f;
-	private int index_selecionado = -1;
+	private static Farmacia f;
 	
-	private ControleProdutos() {
+	public ControleProdutos() {
 		f = Farmacia.getInstance();
 		p = f.getprodutos();
 		f.preencherDados();
 	}
 	
     public static ControleProdutos getInstance() {
-        if (instance == null) {
-            instance = new ControleProdutos();
+        if (instancia == null) {
+            instancia = new ControleProdutos();
         }
-        return instance;
+        return instancia;
     }
 	
 	public String[] getnomeProdutos() {
@@ -37,15 +33,17 @@ public class ControleProdutos {
 	}
 
 	public String[] getPesquisa(String pesquisa) {
-	    ArrayList<String> nomesEncontrados = new ArrayList<>();
-
-	    for (Produto produto : p) {
-	        if (produto.getnome().equals(pesquisa)) {
-	            nomesEncontrados.add(produto.getnome());
-	        }
-	    }
-
-	    return nomesEncontrados.toArray(new String[0]);
+	    ArrayList<String> nomeEncontrado = new ArrayList<>();
+	    int indice = -1;
+	    String[] nulo = null;
+	    
+	    indice = f.buscaproduto(pesquisa);
+	    
+	    if (indice != -1) {
+	    	nomeEncontrado.add(p.get(indice).getnome());
+	    }else return nulo;
+	    
+	    return nomeEncontrado.toArray(new String[0]);
 	}
 	
 	public String[] filtrarLista(char selecionado) {
@@ -72,7 +70,6 @@ public class ControleProdutos {
 	}
 	
 	public Produto castProduto(int index_selecionado) {
-		this.index_selecionado  = index_selecionado;
 		
 	   if (index_selecionado >= 0 && index_selecionado < p.size()) {
 	        Produto produto = p.get(index_selecionado);
@@ -91,71 +88,73 @@ public class ControleProdutos {
 	   return null;		
 	}
 	
-	public int getIndexProduto(String nome) {
-	    for (int i = 0; i < p.size(); i++) {
-	        if (p.get(i).getnome().equals(nome)) {
-	            return i;
-	        }
-	    }
-	    return -1;
-	}
-	
-	public void adicionarProduto(int index_selecionado, String[] novoProduto, Farmacia f, char categoria) {
-		this.index_selecionado = index_selecionado;
+	public boolean adicionarEditarProduto(int index_selecionado, String[] 
+			novoProduto, Farmacia f, char categoria) {
+		boolean retorno = false;
 		
 		if(index_selecionado != -1) {
 			Produto produto = castProduto(index_selecionado);
+			retorno = true;
 		
-			if(produto instanceof Medicamento || produto == null) {
-				Medicamento medicamento = new Medicamento(novoProduto[0], novoProduto[1], 
-				Float.parseFloat(novoProduto[2]), Integer.parseInt(novoProduto[3]),
-				novoProduto[4], novoProduto[5], novoProduto[6], novoProduto[7],
+			if(produto instanceof Medicamento) {
+				Medicamento medicamento = new Medicamento(novoProduto[0], 
+				novoProduto[1],Float.parseFloat(novoProduto[2]), 
+				Integer.parseInt(novoProduto[3]),novoProduto[4],
+				novoProduto[5], novoProduto[6], novoProduto[7],
 				novoProduto[8]);
 				
 				f.setproduto(index_selecionado, medicamento);
 			}
 			if(produto instanceof Vitamina) {
-				Vitamina vitamina = new Vitamina(novoProduto[0], novoProduto[1], 
-				Float.parseFloat(novoProduto[2]), Integer.parseInt(novoProduto[3]),
-				novoProduto[4], novoProduto[5], novoProduto[6], novoProduto[7],
+				Vitamina vitamina = new Vitamina(novoProduto[0], 
+				novoProduto[1],Float.parseFloat(novoProduto[2]),
+				Integer.parseInt(novoProduto[3]),novoProduto[4],
+				novoProduto[5], novoProduto[6], novoProduto[7],
 				novoProduto[8]);
 				
 				f.setproduto(index_selecionado, vitamina);
 			}
 			if(produto instanceof Cosmetico) {
-				Cosmetico cosmetico = new Cosmetico(novoProduto[0], novoProduto[1], 
-				Float.parseFloat(novoProduto[2]), Integer.parseInt(novoProduto[3]),
-				novoProduto[4], novoProduto[5], novoProduto[6], novoProduto[7],
+				Cosmetico cosmetico = new Cosmetico(novoProduto[0],
+				novoProduto[1],Float.parseFloat(novoProduto[2]),
+				Integer.parseInt(novoProduto[3]),novoProduto[4],
+				novoProduto[5], novoProduto[6], novoProduto[7],
 				novoProduto[8]);
 				
 				f.setproduto(index_selecionado, cosmetico);
 			}
 		}else if(categoria == 'm'){
-			Medicamento medicamento = new Medicamento(novoProduto[0], novoProduto[1], 
-				Float.parseFloat(novoProduto[2]), Integer.parseInt(novoProduto[3]),
-				novoProduto[4], novoProduto[5], novoProduto[6], novoProduto[7],
+			Medicamento medicamento = new Medicamento(novoProduto[0],
+				novoProduto[1],Float.parseFloat(novoProduto[2]),
+				Integer.parseInt(novoProduto[3]),novoProduto[4],
+				novoProduto[5], novoProduto[6], novoProduto[7],
 				novoProduto[8]);
 			
-				f.addproduto(medicamento);
+				retorno = f.addproduto(medicamento);
 		}else if(categoria == 'v'){
-			Vitamina vitamina = new Vitamina(novoProduto[0], novoProduto[1], 
-				Float.parseFloat(novoProduto[2]), Integer.parseInt(novoProduto[3]),
-				novoProduto[4], novoProduto[5], novoProduto[6], novoProduto[7],
+			Vitamina vitamina = new Vitamina(novoProduto[0],
+				novoProduto[1],Float.parseFloat(novoProduto[2]),
+				Integer.parseInt(novoProduto[3]),novoProduto[4],
+				novoProduto[5], novoProduto[6], novoProduto[7],
 				novoProduto[8]);
 			
-				f.addproduto(vitamina);
+				retorno = f.addproduto(vitamina);
 		}else if(categoria == 'c'){
-			Cosmetico cosmetico = new Cosmetico(novoProduto[0], novoProduto[1], 
-				Float.parseFloat(novoProduto[2]), Integer.parseInt(novoProduto[3]),
-				novoProduto[4], novoProduto[5], novoProduto[6], novoProduto[7],
+			Cosmetico cosmetico = new Cosmetico(novoProduto[0],
+				novoProduto[1],Float.parseFloat(novoProduto[2]),
+				Integer.parseInt(novoProduto[3]),novoProduto[4],
+				novoProduto[5], novoProduto[6], novoProduto[7],
 				novoProduto[8]);
 			
-				f.addproduto(cosmetico);
+				retorno = f.addproduto(cosmetico);
 		}
+		return retorno;
 	}
 	
-	public void excluirProduto(int index_selecionado, Farmacia f) {
-		f.removeproduto(p.get(index_selecionado));
+	public boolean excluirProduto(int index_selecionado, Farmacia f) {
+		boolean retorno = false;
+		retorno = f.removeproduto(p.get(index_selecionado));
+		return retorno;
 	}
 
 }
