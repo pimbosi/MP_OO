@@ -3,17 +3,42 @@ package controle;
 import java.util.ArrayList;
 import modelo.*;
 
+/*
+ * Classe ControleProdutos responsavel por 
+ * controle dos dados que sao exibidos na view.
+ * @author Felipe de Jesus Rodrigues
+ * @since 2023
+ * @version 1.0
+ * */
+
 public class ControleProdutos {
+	
+	/*
+	 * Variaveis de controle.
+	 */
 	
 	private static ControleProdutos instancia;
 	private ArrayList<Produto> p;
 	private static Farmacia f;
+
+	/*
+	 * Construtor da classe como private
+	 * para evitar que haja multiplicidade ou perda de dados
+	 * ao instanciar essa classe nas devidas classes da view.
+	 */
 	
-	public ControleProdutos() {
+	private ControleProdutos() {
 		f = Farmacia.getInstance();
 		p = f.getprodutos();
 		f.preencherDados();
 	}
+	
+	/*
+	 * Metodo responsavel por instanciar a classe
+	 * e garantir que exista apenas uma instancia dela,
+	 * evitando multiplicidade e perda de dados.
+	 * @return ControleProdutos
+	 */
 	
     public static ControleProdutos getInstance() {
         if (instancia == null) {
@@ -22,6 +47,13 @@ public class ControleProdutos {
         return instancia;
     }
 	
+    /*
+     * Metodo resposavel por criar um vetor de String com os nomes
+     * dos produtos adicionados no arrayList da classe
+     * @see Farmacia
+     * @return String[]
+     */
+    
 	public String[] getnomeProdutos() {
 		int i = 0;
 		String[] Produtonome = new String[p.size()];
@@ -32,6 +64,15 @@ public class ControleProdutos {
 		return Produtonome;
 	}
 
+	/*
+	 * Metodo responsavel pela pesquisa de um produto.
+	 * Chama o metodo @see Farmacia#buscaproduto com o argumento
+	 * recebido pela funcao, se retornar um indice valido adiciona
+	 * o nomeEncontrado no arraylist, se nao, retorna uma String[] 
+	 * com valor nulo. No retorno padrao o arrayList eh transformado em String[].
+	 * @return String[]
+	 */
+	
 	public String[] getPesquisa(String pesquisa) {
 	    ArrayList<String> nomeEncontrado = new ArrayList<>();
 	    int indice = -1;
@@ -45,6 +86,14 @@ public class ControleProdutos {
 	    
 	    return nomeEncontrado.toArray(new String[0]);
 	}
+	
+	/*
+	 * Metodo responsavel pelo filtro de um produto, dado sua
+	 * categoria. De acordo com o char passado como argumento
+	 * adiciona o nome do produto referente aquela classe no arrayList e
+	 * trata o retorno transformando o arrayList em String[].
+	 * @return String[]
+	 */
 	
 	public String[] filtrarLista(char selecionado) {
 	    ArrayList<String> nomes = new ArrayList<>();
@@ -69,6 +118,11 @@ public class ControleProdutos {
 	    return nomes.toArray(new String[0]);
 	}
 	
+	/*
+	 * Metodo responsavel por fazer o cast do produto
+	 * para sua respectiva classe filha.
+	 */
+	
 	public Produto castProduto(int index_selecionado) {
 		
 	   if (index_selecionado >= 0 && index_selecionado < p.size()) {
@@ -87,6 +141,21 @@ public class ControleProdutos {
 	   }
 	   return null;		
 	}
+	
+	/*
+	 * Metodo responsavel por adicionar e editar produto.
+	 * O atributo "index_selecionado" vai definir se este metodo
+	 * ira adicionar um produto, ou editar um produto.
+	 * Para editar um produto o metodo @see ControleProdutos#castProduto
+	 * dependendo do retorno, sera atualizado o produto daquela classe com
+	 * o metodo @see Farmacia#setproduto 
+	 * Para adicionar um novo produto a sua classe correspondente, o atributo
+	 * "categoria" para definir de qual classe filha sera o @see Produto
+	 * o metodo @see Farmacia#addproduto 
+	 * eh chamado para adicionar o novo produto.
+	 * Retorna valor booleano correspondente ao sucesso ou fracasso do metodo.
+	 * @return boolean
+	 */
 	
 	public boolean adicionarEditarProduto(int index_selecionado, String[] 
 			novoProduto, Farmacia f, char categoria) {
@@ -150,6 +219,14 @@ public class ControleProdutos {
 		}
 		return retorno;
 	}
+	
+	/*
+	 * Metodo responsavel por excluir um produto dado seu indice.
+	 * Chama o metodo @see Farmacia#removeproduto
+	 * para excluir o produto selecionado. 
+	 * Retorna o retorno do metodo removeproduto.
+	 * @return boolean
+	 */
 	
 	public boolean excluirProduto(int index_selecionado, Farmacia f) {
 		boolean retorno = false;

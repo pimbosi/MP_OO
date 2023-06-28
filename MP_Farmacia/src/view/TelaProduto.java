@@ -8,8 +8,18 @@ import javax.swing.*;
 import modelo.*;
 import controle.*;
 
+/*
+ * Classe TelaProduto cria a janela responsavel por 
+ * adicionar e editar produtos.
+ * @author Felipe de Jesus Rodrigues
+ * @since 2023
+ * @version 1.0
+ * */
+
 public class TelaProduto implements ActionListener{
 
+	// Variaveis da GUI
+	
 	private JFrame janela = new JFrame("Pharma&Cia");
 	private JLabel titulo = new JLabel("Cadastrar novo produto");	
 	private JLabel l1 = new JLabel			("Nome:    				  ");
@@ -48,6 +58,8 @@ public class TelaProduto implements ActionListener{
 	private JButton salvar = new JButton("Salvar");
 	private JButton cancelar = new JButton("Cancelar");
 	
+	// Variaveis de controle
+	
 	private String dados[] = new String[10];
 	private int edicao = -1;
 	
@@ -55,6 +67,8 @@ public class TelaProduto implements ActionListener{
 	private static ControleProdutos controle = ControleProdutos.getInstance();
 	
 	public TelaProduto() {
+		
+		// Setando os componentes da GUI
 		
 		titulo.setBounds(322, 8, 500, 80);
 		titulo.setFont(new Font("Arial", Font.BOLD, 30));
@@ -162,8 +176,9 @@ public class TelaProduto implements ActionListener{
 		cancelar.setBackground(new Color(255, 255, 255));
 		cancelar.setFocusable(false);
 		
-		janela.setLayout(null);
+		// Adicionando os componentes ao JFrame
 		
+		janela.setLayout(null);
 		janela.add(l1);
 		janela.add(l2);
 		janela.add(l3);
@@ -192,7 +207,6 @@ public class TelaProduto implements ActionListener{
 		janela.add(t12);
 		janela.add(t13);
 		janela.add(comboBox);
-		//janela.add(titulo);
 		janela.add(salvar);
 		janela.add(cancelar);
 		
@@ -202,20 +216,36 @@ public class TelaProduto implements ActionListener{
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setLocationRelativeTo(null);
 
+		/*
+		 *  Adicionando os componentes ao metodo
+		 *  @see TelaProduto#actionPerformed
+		 */
+		
 		cancelar.addActionListener(this);
 		comboBox.addActionListener(this);
 		salvar.addActionListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		Object src = e.getSource();		
+		Object src = e.getSource();	/* recebe o metodo responsavel 
+		   							   por identificar a acao
+		 							*/
 		boolean retorno = false;
+		
+		// Cancelar fecha a janela
 		
 		if(src == cancelar) 
 			janela.dispose();
 		
-	      String opcaoSelecionada = (String) comboBox.getSelectedItem();
+	      String opcaoSelecionada = (String) comboBox.getSelectedItem();  /* 
+			metodo da classe combobox que identifica o item selecionado
+			*/
 
+	      /*
+	       * ifs para setar como visivel os componentes referentes
+	       * aos atributos unicos da classe selecionada pelo comboBox.
+	       */
+	      
 	      if (opcaoSelecionada.equals("Cosmético")){
 	    	  l8.setVisible(true);
 	    	  l9.setVisible(true);
@@ -251,6 +281,15 @@ public class TelaProduto implements ActionListener{
         	  	t12.setVisible(false);
                 t13.setVisible(false);
           }
+          
+          /*
+           * Para salvar, eh feito a verificacao dos dados.
+           * Se todos os campos foram preenchidos e se foram
+           * corretamente preenchidos, mensagem de sucesso eh
+           * exibida e os dados sao salvos pelo metodo
+           * @see ControleProdutos#adicionarEditarProduto
+           * se nao, mensagem de erro e dados nao sao salvos.
+           */
           
           if(src == salvar) {
         	  boolean dados_incorretos = false;
@@ -344,9 +383,18 @@ public class TelaProduto implements ActionListener{
 
           }
 	}
-		
+	
+	/*
+	 * Funcao responsavel por exibir os dados
+	 * para edicao. Chamada na @see TelaPrincipal#actionPerformed
+	 */
+	
 	public void mostraDados(int edicao, Produto produto) {
 		this.edicao = edicao;
+		
+		/*
+		 * Tratamento dos dados para exibicao na tela
+		 */
 		
 		t1.setText(produto.getnome());
 		t2.setText(produto.getmarca());
@@ -355,6 +403,11 @@ public class TelaProduto implements ActionListener{
 		t5.setText(produto.getdataValidade());
 		t6.setText(produto.getQuantidade());
 		t7.setText(produto.getPrincipioativo());
+		
+		/*
+		 * ifs que verificam se de qual classe eh a instancia
+		 * e exibe os atributos unicos dessa instancia.
+		 */
 		
 		if(produto instanceof Cosmetico) {
 			Cosmetico cosmetico = (Cosmetico) produto;

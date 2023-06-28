@@ -2,22 +2,62 @@ package modelo;
 
 import java.util.*;
 
+/*
+ * Classe Farmacia responsavel por armazenar os dados dos produtos.
+ * @author Felipe de Jesus Rodrigues
+ * @since 2023
+ * @version 1.0
+ * */
+
 public class Farmacia {
 	
+	/*
+	 * Variavel produtos eh o ArrayList<Produto>
+	 * utilizado para armazenar os dados.
+	 */
+	
 	private static Farmacia instancia;
+	private String nome;
 	private ArrayList<Produto> produtos = new ArrayList<>();
 	
-	private Farmacia() {
+	/*
+	 * Construtor da classe como private
+	 * para evitar que haja multiplicidade ou perda de dados
+	 * ao instanciar essa classe nas devidas classes da view.
+	 */
+	
+	private Farmacia(String nome) {
+		this.setNome(nome);
         produtos = new ArrayList<>();
     }
 
+	/*
+	 * Metodo responsavel por instanciar a classe
+	 * e garantir que exista apenas uma instancia dela,
+	 * evitando multiplicidade e perda de dados.
+	 * @return ControleProdutos
+	 */
+	
     public static Farmacia getInstance() {
         if (instancia == null) {
-            instancia = new Farmacia();
+            instancia = new Farmacia("Pharma&Cia");
         }
         return instancia;
     }
 
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+    
+	/*
+	 * Metodo para peencher dados antes de executar o
+	 * programa.
+	 */
+	
 	public void preencherDados() {
 		
 		Medicamento novoproduto = new Medicamento("Dipirona",
@@ -113,22 +153,57 @@ public class Farmacia {
 		
 	}
 	
+	/*
+	 * Metodo responsavel por retornar os dados
+	 * armazenados no ArrayList produtos.
+	 * @return ArrayList<Produto>
+	 */
+	
 	public ArrayList<Produto> getprodutos(){
 		return produtos;
 	}
+	
+	/*
+	 * Metodo responsavel por adicionar os dados
+	 * no ArrayList produtos.
+	 * Retorna booleano de acordo com o resultado
+	 * dessa acao.
+	 * @return boolean
+	 */
 	
 	public boolean addproduto(Produto novoproduto) {
 		return this.produtos.add(novoproduto);
 	}
 	
+	/*
+	 * Metodo responsavel por atualizar os dados
+	 * no ArrayList produtos.
+	 */
+	
 	public void setproduto(int index, Produto novoproduto) {
 		this.produtos.set(index, novoproduto);
 	}
+	
+	/*
+	 * Metodo responsavel por remover os dados
+	 * no ArrayList produtos.
+	 * Retorna booleano de acordo com o resultado
+	 * dessa acao.
+	 * @return boolean
+	 */
 	
 	public boolean removeproduto(Produto removeproduto) {
 		return this.produtos.remove(removeproduto);
 	}
 
+	/*
+	 * Metodo responsavel por buscar o produto dado
+	 * seu nome no ArrayList produtos.
+	 * Retorna o indice do produto caso o nome seja encontrado
+	 * e retorna -1 caso nao seja enctonrado.
+	 * @return int
+	 */
+	
 	public int buscaproduto(String pesquisa) {
 		for (int i = 0; i < produtos.size(); i++) {
 	        if (produtos.get(i).getnome().equals(pesquisa)) {
@@ -137,4 +212,5 @@ public class Farmacia {
 	    }
 	    return -1;
 	}
+
 }

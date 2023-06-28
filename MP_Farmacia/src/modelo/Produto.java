@@ -1,5 +1,12 @@
 package modelo;
 
+/*
+ * Classe Produto.
+ * @author Felipe de Jesus Rodrigues
+ * @since 2023
+ * @version 1.0
+ * */
+
 public abstract class Produto {
 
 	private String nome;

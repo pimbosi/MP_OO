@@ -1,5 +1,12 @@
 package modelo;
 
+/*
+ * Classe Medicamento herda da classe Produto.
+ * @author Felipe de Jesus Rodrigues
+ * @since 2023
+ * @version 1.0
+ * */
+
 public class Medicamento extends Produto{
 	private String indicacao;
 	private String contraindicacao;

@@ -6,7 +6,17 @@ import controle.*;
 import javax.swing.*;
 import modelo.*;
 
+/*
+ * Classe TelaPrincipal cria a janela principal do programa
+ * que contem a listagem dos produtos e botoes de acoes.
+ * @author Felipe de Jesus Rodrigues
+ * @since 2023
+ * @version 1.0
+ * */
+
 public class TelaPrincipal implements ActionListener {
+	
+	// Variaveis referentes a GUI
 	
 	private static JFrame janela = new JFrame("Pharma&Cia");
 	private static JLabel titulo = new JLabel("PHARMA & CIA");	
@@ -29,10 +39,16 @@ public class TelaPrincipal implements ActionListener {
 			"Cosmético"};
     private static JComboBox<String> filtro = new JComboBox<>(opcoes);
 	
+    // Variaveis de controle
+    
 	private static Farmacia f = Farmacia.getInstance(); 
 	private static ControleProdutos controle = ControleProdutos.getInstance();
 	
+	
 	public TelaPrincipal() {
+		
+		// Setando os componentes da GUI
+		
 		titulo.setBounds(210, 40, 5000, 150);
 		titulo.setFont(new Font("Arial", Font.BOLD, 180));
 		titulo.setForeground(new Color(255, 255, 255));
@@ -63,13 +79,19 @@ public class TelaPrincipal implements ActionListener {
 		pesquisa.setFont(new Font("Arial", Font.LAYOUT_RIGHT_TO_LEFT, 25));
 		pesquisa.setBounds(375,820,500,30);
 		
-		
 		filtrar.setBounds(1315,820,300,30);
 		filtrar.setFont(new Font("Arial", Font.BOLD, 30));
 		filtrar.setForeground(Color.white);
 		filtro.setFont(new Font("Arial", Font.LAYOUT_RIGHT_TO_LEFT, 30));
 		filtro.setBackground(Color.WHITE);
 		filtro.setBounds(1440,820,280,32);
+		
+		/*
+		 * listaNomes recebe o retorno do metodo da classe ControleProdutos
+		 * @see ControleProdutos#getnomeProdutos
+		 * Se passar da condicao a lista sera adicionada a janela da
+		 * tela principal, caso nao passe, exibira uma mensagem de erro
+		 * */ 
 		
 		listaNomes = controle.getnomeProdutos();
 		if (listaNomes != null && listaNomes.length > 0) {
@@ -83,6 +105,8 @@ public class TelaPrincipal implements ActionListener {
 					+ "possível adicionar produtos a lista!", null, 
 					JOptionPane.ERROR_MESSAGE);
 		}
+		
+		// Adicionando os componentes ao JFrame
 		
 		janela.setLayout(null);
 		janela.add(titulo);
@@ -102,6 +126,9 @@ public class TelaPrincipal implements ActionListener {
 		
 	}
 	
+	/* Main que adiciona os devidos componentes ao metodo 
+	   @see TelaPrincipal#actionPerformed
+	*/
 	public static void main(String[] args) {
 		 TelaPrincipal tela = new TelaPrincipal();
 
@@ -112,14 +139,35 @@ public class TelaPrincipal implements ActionListener {
 		 pesquisa.addActionListener(tela);
 	}
 	
+	/*Metodo responsavel identificar acoes em certos componentes
+	 */
+	
 	public void actionPerformed(ActionEvent e) {
-		Object src = e.getSource();
-		String opcaoSelecionada = (String) filtro.getSelectedItem();
+		Object src = e.getSource(); /* recebe o metodo responsavel 
+									   por identificar a acao
+		 							*/
+		String opcaoSelecionada = (String) filtro.getSelectedItem(); /* 
+				metodo da classe combobox que identifica o item selecionado
+		 															*/
 		char selecionado;
 		boolean retorno = false;
-		
+	
+		/*
+		 * Adicionar o produto abre uma nova tela
+		 * @see TelaProduto
+		 */
 		if(src == addProduto)
-			new TelaProduto();
+			new TelaProduto(); 
+		
+		/*
+		 * Para excluir o produto, verifica se o metodo do JList
+		 * nao possui um valor de indice invalido.
+		 * O metodo @see Farmacia#buscaproduto retorna o indice
+		 * identificado que eh passado como argumento do metodo
+		 * @see ControleProdutos#excluirProduto
+		 * Caso esse metodo retorne true, exibe a mensagem de sucesso
+		 * caso false, exibe a mensagem de erro
+		 * */
 		
 		if(src == excluir) {
 			if (listaProdutos.getSelectedIndex() > -1) {
@@ -139,6 +187,17 @@ public class TelaPrincipal implements ActionListener {
 			}
 		}
 		
+		/*
+		 * Para editar, verifica se o metodo do JList
+		 * nao possui um valor de indice invalido.
+		 * Variavel nomeSelecionado recebe o retorno do metodo do JList.
+		 * Essa variavel eh passada como argumento do metodo
+		 * @see Farmacia#buscaproduto que retorna o indice que sera 
+		 * passado como argumento do metodo @see ControleProdutos#castProduto
+		 * Tela de edicao @see TelaProduto#mostraDados recebe o indice e
+		 * o retorno de castProduto.
+		 */
+		
 		if(src == editar) {
 			if (listaProdutos.getSelectedIndex() > -1) {
 		        String nomeSelecionado = listaProdutos.getSelectedValue();
@@ -153,11 +212,22 @@ public class TelaPrincipal implements ActionListener {
 		    }
 		}	
 		
+		/*
+		 * Usa metodos do JList para atualizar a GUI com novos dados
+		 */
+		
 		if(src == atualizar){
 			listaProdutos.setListData(controle.getnomeProdutos());
 			listaProdutos.updateUI();
 		}
 	
+		/*
+		 * Cadeia de ifs responsaveis por filtrar a lista.
+		 * Chama o metodo @see ControleProdutos#filtrarLista
+		 * passa o argumento char para diferenciar a opcao selecionada.
+		 * Atualiza a GUI com dados filtrados.
+		 */
+		
 		if (opcaoSelecionada.equals("Cosmético")){
 			selecionado = 'c';
 			listaProdutos.setListData(controle.filtrarLista(selecionado));
@@ -174,6 +244,16 @@ public class TelaPrincipal implements ActionListener {
 			listaProdutos.setListData(controle.getnomeProdutos());
 			listaProdutos.updateUI();
 		}
+		
+		/*
+		 * Para pesquisa, a variavel nomePesquisado recebe a string 
+		 * passada pelo metodo getText do JTextField.
+		 * Se a pesquisa estiver em branco, atualiza a GUI com os dados
+		 * sem filtro. Caso contrario chama o metodo
+		 * @see ControleProdutos#getnomeProdutos
+		 * se o retorno for valido atualiza a lista e a GUI com os dados
+		 * da pesquisa.
+		 */
 		
 		if(src == pesquisa) {
 			nomePesquisado = pesquisa.getText();

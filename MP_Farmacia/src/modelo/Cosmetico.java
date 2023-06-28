@@ -1,5 +1,12 @@
 package modelo;
 
+/*
+ * Classe Cosmetico herda da classe Produto.
+ * @author Felipe de Jesus Rodrigues
+ * @since 2023
+ * @version 1.0
+ * */
+
 public class Cosmetico extends Produto{
 	private String composicao;
 	private String advertencia;
