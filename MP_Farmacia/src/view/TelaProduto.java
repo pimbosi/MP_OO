@@ -36,6 +36,11 @@ public class TelaProduto implements ActionListener{
 	private JLabel l12 = new JLabel 		("Modo de uso:		      ");
 	private JLabel l13 = new JLabel 	("Recomendação: 		  ");
 	private JLabel l14 = new JLabel 	("Categoria:              ");
+	private JLabel l15 = new JLabel 	("<html>  ATENÇÃO: Produtos da "
+			+ "categoria "
+	        + "Cosmético sofrem um acréscimo de 20% no preço.<br>"
+	        + "O novo preço com o acréscimo apenas será visível depois "
+	        + "do produto ter sido adicionado.</html>");
 	
 	private JTextField t1 = new JTextField(100);
 	private JTextField t2= new JTextField(100);
@@ -102,6 +107,8 @@ public class TelaProduto implements ActionListener{
 		l13.setForeground(new Color(255, 255, 255));
 		l14.setFont(new Font("Arial", Font.LAYOUT_RIGHT_TO_LEFT, 40));
 		l14.setForeground(new Color(255, 255, 255));
+		l15.setFont(new Font("Arial", Font.LAYOUT_RIGHT_TO_LEFT, 30));
+		l15.setForeground(new Color(255, 255, 255));
 		
 		l1.setBounds(200,140,600,40);
 		l2.setBounds(200,200,600,40);
@@ -117,6 +124,7 @@ public class TelaProduto implements ActionListener{
 		l12.setBounds(200,620,600,40);
 		l13.setBounds(200,680,600,40);
 		l14.setBounds(200,560,600,45);
+		l15.setBounds(200,780,2000,85);
 		
 		Font fonte = new Font("Arial", Font.LAYOUT_RIGHT_TO_LEFT, 25);
 		
@@ -154,6 +162,7 @@ public class TelaProduto implements ActionListener{
 		l11.setVisible(false);
 		l12.setVisible(false);
 		l13.setVisible(false);
+		l15.setVisible(false);
 		
 		t8.setVisible(false);
 		t9.setVisible(false);
@@ -193,6 +202,7 @@ public class TelaProduto implements ActionListener{
 		janela.add(l12);
 		janela.add(l13);
 		janela.add(l14);
+		janela.add(l15);
 		janela.add(t1);
 		janela.add(t2);
 		janela.add(t3);
@@ -249,11 +259,13 @@ public class TelaProduto implements ActionListener{
 	      if (opcaoSelecionada.equals("Cosmético")){
 	    	  l8.setVisible(true);
 	    	  l9.setVisible(true);
+	    	  l15.setVisible(true);
 	    	  t8.setVisible(true);
 	    	  t9.setVisible(true);
 	      }else {
 	    	  l8.setVisible(false);
 	    	  l9.setVisible(false);
+	    	  l15.setVisible(false);
 	    	  t8.setVisible(false);
 	    	  t9.setVisible(false);
 	      }
@@ -398,7 +410,6 @@ public class TelaProduto implements ActionListener{
 		
 		t1.setText(produto.getnome());
 		t2.setText(produto.getmarca());
-		t3.setText(Float.toString(produto.getpreco()));
 		t4.setText(Integer.toString(produto.getquantidadeEstoque()));
 		t5.setText(produto.getdataValidade());
 		t6.setText(produto.getQuantidade());
@@ -413,18 +424,22 @@ public class TelaProduto implements ActionListener{
 			Cosmetico cosmetico = (Cosmetico) produto;
 			comboBox.setSelectedItem("Cosmético");
 			comboBox.setEnabled(false);
+			t3.setText(Float.toString(cosmetico.getpreco()));
 			t8.setText(cosmetico.getcomposicao());
 			t9.setText(cosmetico.getadvertencia());
+			l15.setVisible(false);
 		}else if(produto instanceof Medicamento) {
 			Medicamento medicamento = (Medicamento) produto;
 			comboBox.setSelectedItem("Medicamento");
 			comboBox.setEnabled(false);
+			t3.setText(Float.toString(medicamento.getpreco()));
 			t10.setText(medicamento.getindicacao());
 			t11.setText(medicamento.getcontraindicacao());
 		}else if(produto instanceof Vitamina) {
 			Vitamina vitamina = (Vitamina) produto;
 			comboBox.setSelectedItem("Vitamina");
 			comboBox.setEnabled(false);
+			t3.setText(Float.toString(vitamina.getpreco()));
 			t12.setText(vitamina.getmododeuso());
 			t13.setText(vitamina.getrecomendacao());
 		}

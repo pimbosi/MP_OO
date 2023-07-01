@@ -20,6 +20,16 @@ public class Cosmetico extends Produto{
         this.composicao = composicao;
         this.advertencia = advertencia;
     }
+    
+    @Override
+    /*
+     * Override que contempla acréscimo de 20% aos
+     * preços dos cosméticos
+     */
+	public float getpreco() {
+    	return super.getpreco() * 1.2f;
+	}
+    
     public String getcomposicao() {
     	return this.composicao;
     }
