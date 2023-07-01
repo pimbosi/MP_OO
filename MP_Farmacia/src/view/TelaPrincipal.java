@@ -183,7 +183,6 @@ public class TelaPrincipal implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Erro ao excluir produto!"
 						+ "\nCertifique-se de que um produto foi selecionado",	
 					"ERRO", JOptionPane.ERROR_MESSAGE);
-				System.out.println(listaProdutos.getSelectedIndex());
 			}
 		}
 		
