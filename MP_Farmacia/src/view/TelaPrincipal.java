@@ -256,7 +256,7 @@ public class TelaPrincipal implements ActionListener {
 		
 		if(src == pesquisa) {
 			nomePesquisado = pesquisa.getText();
-			if(nomePesquisado.isBlank()) {
+			if(nomePesquisado.isEmpty()) {
 				listaProdutos.setListData(controle.getnomeProdutos());
 				listaProdutos.updateUI();
 			}else {

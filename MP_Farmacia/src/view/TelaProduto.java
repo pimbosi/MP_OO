@@ -306,13 +306,13 @@ public class TelaProduto implements ActionListener{
           if(src == salvar) {
         	  boolean dados_incorretos = false;
 
-        	  if (t1.getText().isBlank() ||
-        	      t2.getText().isBlank() ||
-        	      t3.getText().isBlank() ||
-        	      t4.getText().isBlank() ||
-        	      t5.getText().isBlank() ||
-        	      t6.getText().isBlank() ||
-        	      t7.getText().isBlank() || 
+        	  if (t1.getText().isEmpty() ||
+        	      t2.getText().isEmpty() ||
+        	      t3.getText().isEmpty() ||
+        	      t4.getText().isEmpty() ||
+        	      t5.getText().isEmpty() ||
+        	      t6.getText().isEmpty() ||
+        	      t7.getText().isEmpty() ||
         	      opcaoSelecionada.equals("Selecione")) {
         	      dados_incorretos = true;
         	  }
@@ -330,17 +330,17 @@ public class TelaProduto implements ActionListener{
         		}
         	  
         	  if (opcaoSelecionada.equals("Cosmético") && 
-        		(t8.getText().isBlank() || t9.getText().isBlank())) {
+        		(t8.getText().isEmpty() || t9.getText().isEmpty())) {
         	      dados_incorretos = true;
         	  }
 
         	  if (opcaoSelecionada.equals("Medicamento") &&
-        		(t10.getText().isBlank() || t11.getText().isBlank())) {
+        		(t10.getText().isEmpty() || t11.getText().isEmpty())) {
         	      dados_incorretos = true;
         	  }
 
         	  if (opcaoSelecionada.equals("Vitamina") &&
-        		(t12.getText().isBlank() || t13.getText().isBlank())) {
+        		(t12.getText().isEmpty() || t13.getText().isEmpty())) {
         	      dados_incorretos = true;
         	  }
 
