@@ -1,6 +1,6 @@
 # Mini Projeto App de Farmácia
 
-Este é um mini projeto de um aplicativo de farmácia básico e limitado, contendo apenas um CRUD e uma interface gráfica feita nativamente. Não utiliza de base de dados persistentes, pois está utilizando ArrayList como armazenamento de dados.
+Este é um mini projeto de um aplicativo de farmácia, contendo um CRUD e uma interface gráfica feita nativamente. Não utiliza de base de dados persistentes, utilizando ArrayList como armazenamento de dados.
 
 ## Como usar
 
